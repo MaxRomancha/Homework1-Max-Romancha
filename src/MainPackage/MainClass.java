@@ -9,6 +9,15 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class MainClass {
+
+    enum TemperatureGrade {
+        FROST,
+        COOL,
+        WARM,
+        HOT
+    }
+
+
     public static void main(String[] args) {
 
         //Making the instance of the class Scanner, used for obtaining the input.
@@ -150,7 +159,7 @@ public class MainClass {
             task3_2UserChoice = scanner.nextByte();
         } catch (Exception e) {
             System.out.println("Invalid selection! Using option 1 (Arithmetic mean) instead.");
-            task3_2UserChoice = 1;
+            //task3_2UserChoice = 1;
         }
 
         switch (task3_2UserChoice) {
@@ -162,6 +171,7 @@ public class MainClass {
                 break;
             default:
                 System.out.println("Invalid selection! Using option 1 (Arithmetic mean) instead.");
+                task3_2UserChoice = 1;
                 break;
         }
 
@@ -243,14 +253,14 @@ public class MainClass {
 
         System.out.println("Task 5. Count occurrences of a substring in a string.");
 
-        String task5InputMainString = new String("Java School allows you to try java programming language on practice. Java one of the most popular programming languages. I love Java!!!");
-        String task5InputSubstring = new String("Java");
+        String task5InputMainString = "Java School allows you to try java programming language on practice. Java one of the most popular programming languages. I love Java!!!";
+        String task5InputSubstring = "Java";
 
         int task5Result = task5(task5InputSubstring, task5InputMainString);
         int task5ExpectedResult = 4;
         boolean isTask5ResultCorrect = (task5Result == task5ExpectedResult);
 
-        printResultsToConsole("[" + task5InputSubstring + "] in [" + task5InputMainString + "]", Integer.toString(task5ExpectedResult), Integer.toString(task5Result), isTask5ResultCorrect);
+        printResultsToConsole("Search [" + task5InputSubstring + "] in [" + task5InputMainString + "]", Integer.toString(task5ExpectedResult), Integer.toString(task5Result), isTask5ResultCorrect);
 
         System.out.println("Task 5.1. Array of found occurrence indexes of a substring in a string.");
 
@@ -258,18 +268,76 @@ public class MainClass {
         int[] task5_1ExpectedResult = {0, 30, 69, 128};
         boolean isTask5_1ResultCorrect = Arrays.equals(task5_1Result, task5_1ExpectedResult);
 
-        printResultsToConsole("[" + task5InputSubstring + "] in [" + task5InputMainString + "]", Arrays.toString(task5_1ExpectedResult), Arrays.toString(task5_1Result), isTask5_1ResultCorrect);
+        printResultsToConsole("Search [" + task5InputSubstring + "] in [" + task5InputMainString + "]", Arrays.toString(task5_1ExpectedResult), Arrays.toString(task5_1Result), isTask5_1ResultCorrect);
 
 
         System.out.println("Task 5.2. Array of found occurrence indexes of a substring in a string, entered by user.");
 
         int[] task5_2Result = task5_2();
 
-        System.out.printf("Indexes for %s found occurrences: %s%n$n", task5_2Result.length, Arrays.toString(task5_2Result));
+        System.out.printf("Indexes for %s found occurrences: %s%n%n", task5_2Result.length, Arrays.toString(task5_2Result));
         promptEnterKey();
+
+        System.out.println("Optional task 1. Generating an array with random integers.");
+
+
+        int[] optionalTask1Result = optionalTask1();
+
+        System.out.println(Arrays.toString(optionalTask1Result));
+        for (int i = 0; i < optionalTask1Result.length; i++) {
+            System.out.printf("%s day, %s degrees;%n", i + 1, optionalTask1Result[i]);
+        }
+
+        promptEnterKey();
+
+
+        System.out.println("Optional task 2. ENUM usage.");
+
+        int optionalTask2Input = random.nextInt(201) - 100;
+
+        Enum optionalTask2Result = optionalTask2(optionalTask2Input);
+
+        System.out.printf("Temperature of %s is qualified as: %s%n", optionalTask2Input, optionalTask2Result);
+
+        promptEnterKey();
+
+        System.out.println("Optional task 2.1. Return array of 2 relevant strings.");
+
+        String[] optionalTask2_1Result = new String[2];
+
+        optionalTask2_1Result = optionalTask2_1(optionalTask2Result);
+        System.out.printf("Clothes for %s weather are: %s%n", optionalTask2Result, Arrays.toString(optionalTask2_1Result));
+
+        promptEnterKey();
+
+        System.out.println("Returning relevant string output per element on a randomly generated array.");
+
+        System.out.print("Please enter number of days: ");
+
+        int optionalTask3Input;
+
+        try {
+            optionalTask3Input = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid input! Using number of days [10] instead.");
+            optionalTask3Input = 10;
+        }
+
+        if (optionalTask3Input < 1) {
+            System.out.println("Entered value is too low. Using number of days [1] instead");
+            optionalTask3Input = 1;
+        }
+        optionalTask3(optionalTask3Input);
+
+        promptEnterKey();
+
+        System.out.println("The end of the program reached.");
+        promptEnterKey();
+
 
         //the end of the main method
     }
+
 
     public static int task1(int inputInteger) {
         //calculating the sum of the digits
@@ -558,15 +626,13 @@ public class MainClass {
 
         System.out.println("Please enter the substring (string to search):");
 
-        String task5_2InputSubstring = new String(scanner.nextLine());
+        String task5_2InputSubstring = scanner.nextLine();
 
         System.out.println("Please enter the main string (string where to search):");
 
-        String stringWhereToSearch = new String(scanner.nextLine());
+        String stringWhereToSearch = scanner.nextLine();
 
-        int[] foundIndexes = task5_1(task5_2InputSubstring, stringWhereToSearch);
-
-        return foundIndexes;
+        return task5_1(task5_2InputSubstring, stringWhereToSearch);
     }
 
     public static void printResultsToConsole(String input, String expectedResult, String actualResult, Boolean isAMatch) {
@@ -581,4 +647,93 @@ public class MainClass {
 
     }
 
+    public static int[] optionalTask1() {
+        int[] resultArray = new int[29];
+
+
+        for (int i = 0; i < resultArray.length; i++) {
+            resultArray[i] = randomTemperature();
+        }
+
+        return resultArray;
+    }
+
+    public static int randomTemperature() {
+        Random random = new Random();
+        return random.nextInt(201) - 100;
+    }
+
+    public static Enum optionalTask2(int temperature) {
+
+        byte grade;
+        Enum temperatureGrade = MainClass.TemperatureGrade.FROST;
+
+        if (temperature < -50) {
+            grade = 0;
+        } else if (temperature < 0) {
+            grade = 1;
+        } else if (temperature < 50) {
+            grade = 2;
+        } else {
+            grade = 3;
+        }
+
+        switch (grade) {
+            case 0:
+                temperatureGrade = MainClass.TemperatureGrade.FROST;
+                break;
+            case 1:
+                temperatureGrade = MainClass.TemperatureGrade.COOL;
+                break;
+            case 2:
+                temperatureGrade = MainClass.TemperatureGrade.WARM;
+                break;
+            case 3:
+                temperatureGrade = MainClass.TemperatureGrade.HOT;
+                break;
+        }
+
+        return temperatureGrade;
+
+    }
+
+    public static String[] optionalTask2_1(Enum temperatureGrade) {
+
+        String[] resultArray = new String[2];
+
+        String[] clothes = {"Parka", "Coat", "Jacket", "T-Shirt"};
+        String[] shoes = {"Arctic boots", "Boots", "Sneakers", "Sandals"};
+
+        int temperatureIndex = 0;
+
+        if (temperatureGrade == TemperatureGrade.FROST) {
+            temperatureIndex = 0;
+        } else if (temperatureGrade == TemperatureGrade.COOL) {
+            temperatureIndex = 1;
+        } else if (temperatureGrade == TemperatureGrade.WARM) {
+            temperatureIndex = 2;
+        } else if (temperatureGrade == TemperatureGrade.HOT) {
+            temperatureIndex = 3;
+        }
+
+        resultArray[0] = clothes[temperatureIndex];
+        resultArray[1] = shoes[temperatureIndex];
+        return resultArray;
+
+    }
+
+    public static int[] optionalTask3(int numberOfDays) {
+        int[] weatherForecast = new int[numberOfDays];
+
+        for (int i = 0; i < weatherForecast.length; i++) {
+            weatherForecast[i] = randomTemperature();
+        }
+
+        for (int i = 0; i < weatherForecast.length; i++) {
+            System.out.printf("Day %s: %s, %s+%s%n", i + 1, weatherForecast[i], optionalTask2_1(optionalTask2(weatherForecast[i]))[0], optionalTask2_1(optionalTask2(weatherForecast[i]))[1]);
+        }
+
+        return weatherForecast;
+
+    }
 }
